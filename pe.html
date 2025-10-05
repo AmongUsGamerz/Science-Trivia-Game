@@ -1,0 +1,411 @@
+<body>
+<button onclick="start()" id="start"> Start the game</button>
+
+<h3 id="question"> Question </h3>
+
+<h1 id="battle"> Muscle vs Bones Mental Brawl </h1>
+
+<img id="player1img" src="bobtheblob.png"/>
+<img id="player2img" src="collisionpolice.png"/>
+
+<img id="player1thing" src="man.gif"/>
+<img id="player2thing" src="man.gif"/>
+
+<h2 id="health1"> Health1: 100 </h2>
+<h2 id="health2"> Health2: 100 </h2>
+
+<table id="questiontable1">
+<tr>
+<td><button id="button1" onclick="answer(1,1)">A</button></td>
+<td><button id="button2" onclick="answer(2,1)">B</button></td>
+<td><button id="button3" onclick="answer(3,1)">C</button></td>
+</tr>
+</table>
+
+<table id="questiontable2">
+<tr>
+<td><button id="button12" onclick="answer(1,2)">A</button></td>
+<td><button id="button22" onclick="answer(2,2)">B</button></td>
+<td><button id="button32" onclick="answer(3,2)">C</button></td>
+</tr>
+</table>
+
+<body>
+
+<script>
+var health1 = 100;
+var health2 = 100;
+
+var left1 = 310;
+var left2 = 1000;
+
+async function answer(button, side) {
+await sleep(100);
+document.getElementById("questiontable1").style.visibility = 'hidden';
+document.getElementById("questiontable2").style.visibility = 'hidden';
+    if(button == correctButton) {
+        if(side == 1) {turn = 2;
+            health2 -= Math.floor(Math.random() * 10);
+            for(i = 310; i < 950; i+=5) {
+            left1 += 5;
+                document.getElementById("player1thing").style.left = left1;
+                await sleep(5);
+            }
+            await sleep(300);
+            left1 = 310;
+            document.getElementById("player1thing").style.left = 310;
+            document.getElementById("health2").innerHTML = "Health2 " + health2;
+        }
+        
+        if(side == 2) { turn = 1;
+            health1 -= Math.floor(Math.random() * 10);
+            for(i = 950; i > 310; i-=5) {
+            left2 -= 5;
+                document.getElementById("player2thing").style.left = left2;
+                await sleep(5);
+            }
+            await sleep(300);
+            left2 = 1000;
+            document.getElementById("player2thing").style.left = 1000;
+            
+            document.getElementById("health2").innerHTML = "Health2 " + health2;
+            
+            document.getElementById("health1").innerHTML = "Health1 " + health1;
+        }
+    }
+    
+    else if(button != correctButton){
+        if(side == 1) {turn = 2;
+        alert("YOU WERE WRONG!");
+        
+            document.getElementById("battle").innerHTML = "The answer to the question " + questionsBones[m] +" was " +bones[m];
+          await sleep(5000);  
+        }
+        else if(side == 2) {turn = 1;
+         alert("YOU WERE WRONG!");
+            document.getElementById("battle").innerHTML = "The answer to the question " + questionsMuscles[m] +" was " + muscles[m];
+            await sleep(5000);
+        }
+    }
+    
+    if(health1 <=0) {
+    alert("Player 2 won!");
+    }
+    else if(health2 <= 0) {
+        alert("player 2 won!");
+    }
+    else if(health1 >0 && health2 > 0) {
+question();
+}
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}    
+
+var bones = ["carpal", "clavicle", "cranium", "femur", "fibula", "humerus", "patella", "pelvis", "radius", "ribs", "scapula", "sternum", "tarsals", "tibia", "ulna", "vertebrae"];
+
+var muscles = ["abdominals", "biceps", "deltoid", "gastrocnemius", "gluteals", "hamstring", "latissimus dorsi", "pectoral", "quadriceps", "trapezius", "triceps"];
+
+
+var player1Left = 310;
+var player2Left = 1000;
+
+async function start() {
+    //change animations and move
+    document.getElementById("player1img").src = 'evilbobtheblob.png';
+    document.getElementById("player2img").src = 'evilcollisionpolice.png';
+    document.getElementById("start").style.visibility = 'hidden';
+    
+    await sleep(500);
+    
+    for(var g = 0; g < 150; g++) {
+    player1Left -= 1;
+    player2Left += 1;
+        document.getElementById("player1img").style.left = player1Left;    
+        document.getElementById("player2img").style.left = player2Left;
+        await sleep(3);
+    }
+    begin();
+}
+
+var turn = 0;
+var health1 = 100;
+var health2 = 100;  
+
+var turn = 0; //one is player 1, 2 is player 2
+async function begin() {
+var j = Math.floor(Math.random() * 2)
+    if(j == 0) {
+        turn = 1; //player 1
+        alert("Player 1 is up first!");
+        document.getElementById("battle").innerHTML = "Player 1's turn!";
+    }
+    
+    else if(j == 1) {
+        turn = 2; //player 2;
+        alert("Player 2 is up first!");
+        document.getElementById("battle").innerHTML = "Player 2's turn!";
+    }
+    await sleep(100);
+    document.getElementById("health1").style.visibility = 'visible';
+    document.getElementById("health2").style.visibility = 'visible';
+    question();
+}
+
+var questionsBones = ["What are the bones located in the wrist?", "What is the collarbone?", "What is another name for the skull?", "What is the largest bone in the leg, and in the body?", "What is the name of the smaller of the lower leg bones?", "What is the large bone in the upper arm?", "What is another name for the kneecap?","What is the bone that both legs connect to?", "What is the bone on the thumb side of the forearm?", "What bones surround the internal organs in the chest?", "What is another name for shoulder blade?", "What is another name for the breastbone?",  "What group of bones is located in the ankle?", "what is the largest bone in the lower leg?",  "What is the bone on the pinky side of the forearm?","What are the bone disks that make up your spine called?"];
+
+var questionsMuscles = ["What are the muscles that cover the stomach?", "What is the larger muscle in the upper arm that allows you to curl them?", "What are the muscles on the sides of the shoulders, like an epaulette?", "What is the name of the large muscle in the calf?", "What is the name of the muscles in the butt?", "What is the name of the muscles on the back of the thigh?", "What is the name of the muscle largest muscle in the upper body? (in the back)", "What is the name of the muscles in your chest, near you heart?", "What is the name of the muscle in front of the thigh?", "What is the name of the muscle in the shoulder that stretches over your shoulders and down you back?", "What is the name of the muscle on the back of the upper arm?"]
+
+var pointTimer = 1000;
+var correctButton = 0;
+var p;
+var storage = [];
+var m = 0;
+async function question() {
+storage.length = 0;
+m = 0;
+p = 0;
+var n = Math.floor(Math.random()*3);
+    if(turn == 1) {
+    document.getElementById("battle").innerHTML = "Player 1's turn!";
+        document.getElementById("questiontable1").style.visibility = 'visible';
+        document.getElementById("questiontable2").style.visibility = 'hidden';
+        
+        m = Math.floor(Math.random() * 16);
+        document.getElementById("question").innerHTML = questionsBones[m];
+        document.getElementById("question").style.visibility = 'visible';
+
+
+        for(i = 0; i < bones.length; i++) {storage[i] = bones[i];}
+        storage.splice(storage.indexOf(bones[m]),1);
+        
+        p = Math.floor(Math.random() * 14);
+        await sleep(100);
+        
+        if(n == 0) {
+            document.getElementById("button1").innerHTML = bones[m];
+            document.getElementById("button2").innerHTML = storage[p];
+            //storage.splice(storage.indexOf(p),1);
+            document.getElementById("button3").innerHTML = storage[Math.floor(Math.random() * 12)];
+            correctButton = 1;
+        }
+        else if(n == 1) {
+            document.getElementById("button2").innerHTML = bones[m]; 
+            document.getElementById("button1").innerHTML = storage[p];
+            //storage.splice(storage.indexOf(p),1);
+            document.getElementById("button3").innerHTML = storage[Math.floor(Math.random() * 12)];
+            correctButton = 2;
+        }
+        else if(n == 2) {
+            document.getElementById("button3").innerHTML = bones[m];
+            document.getElementById("button1").innerHTML = storage[p];
+            //storage.splice(storage.indexOf(p),1);
+            document.getElementById("button2").innerHTML = storage[Math.floor(Math.random() * 12)];
+            correctButton = 3;
+        }
+    }
+    
+    
+    
+    else if(turn == 2) {
+    document.getElementById("battle").innerHTML = "Player 2's turn!";
+        document.getElementById("questiontable1").style.visibility = 'hidden';
+        document.getElementById("questiontable2").style.visibility = 'visible';
+        
+        m = Math.floor(Math.random() * 11);
+        document.getElementById("question").innerHTML = questionsMuscles[m];
+        document.getElementById("question").style.visibility = 'visible';
+
+
+        for(i = 0; i < muscles.length; i++) {storage[i] = muscles[i];}
+        storage.splice(storage.indexOf(muscles[m]),1);
+        
+        p = Math.floor(Math.random() * 10);
+        
+        await sleep(100);
+        if(n == 0) {
+            document.getElementById("button12").innerHTML = muscles[m];
+            document.getElementById("button22").innerHTML = storage[p];
+            //storage.splice(storage.indexOf(p),1);
+            document.getElementById("button32").innerHTML = storage[Math.floor(Math.random() * 9)];
+            correctButton = 1;
+        }
+        else if(n == 1) {
+            document.getElementById("button22").innerHTML = muscles[m]; 
+            document.getElementById("button12").innerHTML = storage[p];
+            //storage.splice(storage.indexOf(p),1);
+            document.getElementById("button32").innerHTML = storage[Math.floor(Math.random() * 9)];
+            correctButton = 2;
+        }
+        else if(n == 2) {
+            document.getElementById("button32").innerHTML = muscles[m];
+            document.getElementById("button12").innerHTML = storage[p];
+            //storage.splice(storage.indexOf(p),1);
+            document.getElementById("button22").innerHTML = storage[Math.floor(Math.random() * 9)];
+            correctButton = 3;
+        }
+    }   
+}
+
+
+</script>
+<style>
+#table1 {
+position: absolute;
+top: 300px;
+left: 150px;
+visibility: hidden;
+}
+#table2 {
+position: absolute;
+top: 300px;
+left: 850px;
+visibility: hidden;
+}
+#choices1 {
+position: absolute;
+left: 310px;
+top: 250px;
+}
+#choices2 {
+position: absolute;
+left: 1000px;
+top: 250px;
+}
+#player1 {
+position: absolute;
+left: 210px;
+top: 95px;
+visibility: hidden;
+}
+#player2 {
+position: absolute;
+left: 800px;
+top: 95px;
+visibility: hidden;
+}
+#reset1 {
+position: absolute;
+left: 310px;
+top: 200px;
+visibility: hidden;
+}
+#reset2 {
+position: absolute;
+left: 1000px;
+top: 200px;
+visibility: hidden;
+}
+button {
+    width: 100px;
+}
+#start {
+position: absolute;
+left: 650px;
+top: 300px;
+width: 100px;
+height: 100px;
+font-size: 20px;
+visibility: visible;
+}
+#player1img {
+position: absolute;
+left: 310px;
+top: 500px;
+width: 100px;
+height: 100px;
+}
+#player2img {
+position: absolute;
+left: 1000px;
+top: 500px;
+width: 100px;
+height: 100px;
+}
+#battle {
+position: absolute;
+top: 15px;
+left: 350px;
+font-size: 50px;
+}
+
+#player1thing {
+position: absolute;
+height: 100px;
+width: 100px;
+top: 400px;
+left: 310px;
+}
+#player2thing {
+position: absolute;
+height: 100px;
+width: 100px;
+top: 400px;
+left: 1000px;
+transform: rotateY(180deg);
+}
+#health1 {
+position: absolute;
+left: 310px;
+top: 350px;
+visibility: hidden;
+}
+#health2 {
+position: absolute;
+left: 1000px;
+top: 350px;
+visibility: hidden;
+}
+#questiontable1 {
+position: absolute;
+left: 200px;
+top: 320px;
+visibility: hidden;
+}
+#questiontable2 {
+position: absolute;
+top: 320px;
+left: 925px;
+visibility: hidden;
+}
+#meow {
+position: absolute;
+top: 200px;
+left: 550px;
+height: 400px;
+width: 300px;
+visibility: hidden;
+}
+
+#question {
+position: absolute;
+left: 400px;
+top: 200px;
+visibility: hidden;
+}
+</style>
+
+
+<script>
+    //visibility change to set up 
+/*
+    document.getElementById("table1").style.visibility = 'hidden';
+    document.getElementById("player1").style.visibility = 'visible';
+    document.getElementById("reset1").style.visibility = 'hidden';
+    
+    document.getElementById("table2").style.visibility = 'hidden';
+    document.getElementById("player2").style.visibility = 'visible';
+    document.getElementById("reset2").style.visibility = 'hidden';
+    
+    document.getElementById("choices1").style.visibility = 'hidden';
+    document.getElementById("choices2").style.visibility = 'hidden';
+    document.getElementById("start").style.visibility = 'hidden';
+    */
+//visibility change to set up
+    //document.getElementById("health1").style.visibility = 'visible';
+    //document.getElementById("health2").style.visibility = 'visible';
+    
+</script>
+
+
